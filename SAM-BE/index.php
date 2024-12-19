@@ -45,8 +45,6 @@ $result = $conn->query($sql);
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
-      filter: brightness(85%);
-      z-index: -1;
     }
 
     .btnTag {
@@ -72,13 +70,13 @@ $result = $conn->query($sql);
     }
 
     .titleIsland {
-      font-family: "Poller One", serif;
+      font-family: "Trade Winds", system-ui;
       font-weight: 400;
       font-style: normal;
       background: #FFDD1D;
-background: linear-gradient(to right, #FFDD1D 16%, #1E6849 39%, #0612FF 62%, #EA0000 88%);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
+      background: linear-gradient(to right, #FFDD1D 16%, #1E6849 39%, #0612FF 62%, #EA0000 88%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
 
     }
 
@@ -132,11 +130,12 @@ background: linear-gradient(to right, #FFDD1D 16%, #1E6849 39%, #0612FF 62%, #EA
       color: black;
     }
 
-    .card-textsD {
-      font-size: 24px;
+    .card-textsD{
+      font-size: 22px;
       color: black;
       padding: 15px;
       border-radius: 9px;
+      text-align: justify;
 
     }
 
@@ -144,8 +143,8 @@ background: linear-gradient(to right, #FFDD1D 16%, #1E6849 39%, #0612FF 62%, #EA
       font-size: 19px;
       color: black;
       padding: 15px;
-      background-color: lightgray;
       border-radius: 9px;
+      text-align: justify;
     }
 
     .background {
@@ -166,6 +165,77 @@ background: linear-gradient(to right, #FFDD1D 16%, #1E6849 39%, #0612FF 62%, #EA
       transform: translateY(-5px);
       box-shadow: 0 15px 20px rgba(0, 0, 0, 0.4);
     }
+
+    /* Container for the image */
+    .image-container {
+      position: relative;
+      width: auto;
+      max-height: 400px;
+      overflow: hidden;
+      /* Ensures no tilt overflow */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 100px;
+      /* Adds a 3D perspective effect */
+    }
+
+    /* Image styles */
+    .image {
+      width: 100%;
+      height: auto;
+      transition: transform 0.5s ease-in-out;
+      /* Smooth transition for the tilt effect */
+      transform-origin: center;
+      /* Tilt around the center of the image */
+    }
+
+    /* Tilt effect on hover */
+    .image-container:hover .image {
+      transform: rotate(5deg);
+      /* Tilts the image clockwise by 5 degrees */
+    }
+
+    /* Modify the card image styles to be more responsive */
+.card-img-top {
+  height: auto;
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover; /* Ensures the image covers the space without distortion */
+}
+
+/* Ensure card body adjusts with screen size */
+.card-body {
+  padding: 1rem;
+}
+
+/* Modify the grid for the contents to be more responsive */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.col-lg-4, .col-md-6, .col-sm-6 {
+  margin-bottom: 20px;
+  flex: 1 1 calc(33.3333% - 20px); /* Ensure the cards take up 1/3 width on large screens */
+}
+
+/* Ensure content cards take full width on smaller screens */
+@media (max-width: 767px) {
+  .col-lg-4 {
+    flex: 1 1 100%; /* Makes the card take full width on smaller screens */
+  }
+}
+
+@media (max-width: 575px) {
+  .col-md-6, .col-sm-6 {
+    flex: 1 1 100%; /* Ensures cards take full width on mobile screens */
+  }
+}
+
+
+
   </style>
 </head>
 
@@ -179,10 +249,10 @@ background: linear-gradient(to right, #FFDD1D 16%, #1E6849 39%, #0612FF 62%, #EA
 
   <div class="background container-fluid text-white py-4" id="menu">
     <div class="container">
-      <h1 class="titleIsland text-center display-1 mb-5">ISLAND OF PERSONALITY</h1>
+      <h1 class="titleIsland text-center display-1 mb-5 p-2">ISLANDS OF PERSONALITY</h1>
       <div class="row text-center">
         <?php while ($row = $result->fetch_assoc()): ?>
-          <div class="col-3">
+          <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-3">
             <button class="btn btn-lg text-dark w-100 tablink" onclick="openMenu(event, '<?php echo $row['name']; ?>')"><?php echo $row['name']; ?></button>
           </div>
         <?php endwhile; ?>
@@ -194,27 +264,22 @@ background: linear-gradient(to right, #FFDD1D 16%, #1E6849 39%, #0612FF 62%, #EA
         ?>
           <div id="<?php echo $row['name']; ?>" class="menu mt-4" style="display: none;">
             <div class="card mb-3" style="border: 5px solid <?php echo $row['color']; ?>;">
-
-              <h5 class="card-title text-center mb-4" style="font-size: 30px;
-                color: black;
-                padding: 15px;
-                background-color: <?php echo $row['color']; ?>;
-                font-family: 'Trade Winds', system-ui;
-                font-weight: 400;
-                font-style: normal;"><b><?php echo $row['name']; ?></b></h5>
-              <img src="<?php echo $row['image']; ?>" class="card-img-top mx-auto d-block img-fluid" style="width: auto; max-height: 500px;" alt="<?php echo $row['name']; ?>">
-
-              <div class="card-body">
+              <h5 class="card-title text-center mb-4" style="font-size: 30px; color: black; padding: 15px; background-color: <?php echo $row['color']; ?>; font-family: 'Trade Winds', system-ui; font-weight: 400; font-style: normal;">
+                <b><?php echo $row['name']; ?></b>
+              </h5>
+              <img src="<?php echo $row['image']; ?>" class="card-img-top mx-auto d-block img-fluid pb-3" style="width: auto; max-height: 500px; " alt="<?php echo $row['name']; ?>">
+              <div class="card-body mx-3">
                 <p class="card-textsD" style="background-color: <?php echo $row['color']; ?>;"><strong>Short Description:</strong> <?php echo $row['shortDescription']; ?></p>
                 <p class="card-textLd" style="background-color: <?php echo $row['color']; ?>;"><strong>Long Description:</strong> <?php echo $row['longDescription']; ?></p>
                 <p class="card-textsD" style="color: <?php echo $row['color']; ?>;">
                   <strong>Color:</strong> <?php echo $row['color']; ?>
                 </p>
+              </div>
 
-              </div>
               <div>
-                <h1 class="titleContent text-center my-5" style="color: black; ">CONTENTS</h1>
+                <h1 class="titleContent text-center my-5" style="color: black;">CONTENTS</h1>
               </div>
+
               <div class="row">
                 <?php
                 $islandOfPersonalityID = $row['islandOfPersonalityID'];
@@ -224,15 +289,22 @@ background: linear-gradient(to right, #FFDD1D 16%, #1E6849 39%, #0612FF 62%, #EA
                 if ($contentResult->num_rows > 0) {
                   while ($content = $contentResult->fetch_assoc()) {
                 ?>
-                    <div class="col-md-4 col-sm-6 mb-4">
-                      <div class="card" style="border-left: 10px solid <?php echo $content['color']; ?>;">
-                        <img src="<?php echo $content['image']; ?>" class="card-img-top mx-auto d-block" style="width: auto; max-height: 300px;" alt="Content Image">
-                        <div class="card-body mx-3">
+                    <div class="col-lg-4 col-md-6 col-sm-6 mb-4 mx-1">
+                      <div class="card mb-3" style="background: <?php echo $content['color']; ?> ">
+                        <div class="image-container">
+                          <img
+                            src="<?php echo $content['image']; ?>"
+                            class="image card-img-top mx-auto d-block img-fluid p-4 mt-3"
+                            style="width: auto; min-height: 300px;"
+                            alt="Content Image">
+                        </div>
+                        <div class="card-body mx-3 my-3">
                           <p class="card-text"><?php echo $content['content']; ?></p>
                           <p class="card-text"><strong>Color:</strong> <?php echo $content['color']; ?></p>
                         </div>
                       </div>
                     </div>
+
                 <?php
                   }
                 } else {
@@ -245,10 +317,6 @@ background: linear-gradient(to right, #FFDD1D 16%, #1E6849 39%, #0612FF 62%, #EA
           </div>
         <?php endwhile; ?>
       </div>
-
-      <footer class="text-center bg-dark text-white rounded-2 py-2">
-        <p>Allrights Reserved</p>
-      </footer>
 
       <script>
         function openMenu(evt, menuName) {
@@ -267,7 +335,10 @@ background: linear-gradient(to right, #FFDD1D 16%, #1E6849 39%, #0612FF 62%, #EA
         document.getElementsByClassName("tablink")[0].click();
       </script>
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
